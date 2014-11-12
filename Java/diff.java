@@ -1,10 +1,12 @@
 package net.codehobby.diff;
 
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
-public class diff
+public class Diff
 {
-	private ArrayList<String> in_file( String filename )
+	private ArrayList<String> readfile( String filename )
 	{
 		ArrayList<String> lines = new ArrayList<String>();
 
@@ -14,8 +16,8 @@ public class diff
 			String inputLine = null;
 			
 			while( (inputLine = bReader.readLine()) != null )
-			{
-				lines.add( inputLine );
+			{//Read each line of the file using bReader and put each one it turn into the inputLine string.
+				lines.add( inputLine );//Put each inputLine (i.e. each line of the file) into the lines ArrayList.
 			}
 		} catch( IOException e )
 		{
