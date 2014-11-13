@@ -6,6 +6,28 @@ import java.io.FileReader;
 
 public class Diff
 {
+	private int MAXLINES = 2000;//Max number of lines to read in a file.
+	private int ORIGIN = MAXLINES;//Subscript fro diagonal 0.
+	ArrayList<String> A;//Lines of file1.
+	ArrayList<String> B;//Lines of file2.
+
+	/**
+	 * This actually calculates the diff of two files.
+	 * 
+	 * @param file1 The filename of the first file.
+	 * @param file2 The filename of the second file.
+	 * @return An ArrayList of Change objects representing all the changes of the files.
+	 */
+	public ArrayList<Change> diff( String file1, String file2 )
+	{
+	}
+
+	/**
+	 * This will read the file pointed to by filename and put the lines in an ArrayList of Strings.
+	 * 
+	 * @param filename The filename to read.
+	 * @return The ArrayList of Strings containing the text of the file.
+	 */
 	private ArrayList<String> readfile( String filename )
 	{
 		ArrayList<String> lines = new ArrayList<String>();
@@ -28,5 +50,14 @@ public class Diff
 		{
 			return lines;
 		}
+	}
+	
+	/**
+	 * Prints the differences between the two files.
+	 * 
+	 * @param changes A list of differences between the two files.
+	 */
+	private void printChanges( ArrayList<Change> changes )
+	{
 	}
 }
