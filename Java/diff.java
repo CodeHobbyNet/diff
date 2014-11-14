@@ -20,6 +20,17 @@ public class Diff
 	 */
 	public ArrayList<Change> diff( String file1, String file2 )
 	{
+		int max_d = 2*MAXLINES;//bound on size of edit script
+		int m;//number of lines in file1
+		int n;//number of lines in file2
+		int lower;//left-most diagonal under consideration
+		int upper;//right-most diagonal under consideration
+		int d;//current edit distance
+		int k;//current diagonal
+		int row;//row number
+		int col;//column number
+		ArrayList<Integer> last_d = new ArrayList<Integer>(2*MAXLINES+1);//the row containing the last d. Initialized to have room for at least 2*MAXLINES+1 elements.
+		ArrayList<Change> script = new ArrayList<Integer>(2*MAXLINES+1);//corresponding edit script. Initialized to have room for at least 2*MAXLINES+1 elements.
 	}
 
 	/**
