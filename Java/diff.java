@@ -59,5 +59,24 @@ public class Diff
 	 */
 	private void printChanges( ArrayList<Change> changes )
 	{
+		Change a, b;
+		int j = 0;
+		for( int i = 0; i < changes.size(); i++ )
+		{//For each change in the changes ArrayList, print the change.
+			if( changes.get(i).getOperation() == Change.INSERT )
+			{//If it's an insert, tell the user.
+				System.out.println( "Inserted after line " + individualChange.getLineNumber1() + ":" );
+			}
+			else
+			{//It's a delete, so tell the user.
+				do
+				{//Look to see if this is a block of deleted lines.
+					//TODO: Check to see how many deleted lines there are.
+					//Possibly use j to point to the command after the last deletion.
+				}
+				
+				//TODO: Print out the deleted stuff.
+			}
+		}
 	}
 }
