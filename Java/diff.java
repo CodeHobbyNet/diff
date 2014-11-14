@@ -35,7 +35,9 @@ public class Diff
 		
 		//Read file1 and file2 into ArrayLists A and B
 		A = readFile( file1 );
+		m = A.size();
 		B = readFile( file2 );
+		n = B.size();
 	}
 
 	/**
