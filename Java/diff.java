@@ -31,6 +31,11 @@ public class Diff
 		int col;//column number
 		ArrayList<Integer> last_d = new ArrayList<Integer>(2*MAXLINES+1);//the row containing the last d. Initialized to have room for at least 2*MAXLINES+1 elements.
 		ArrayList<Change> script = new ArrayList<Integer>(2*MAXLINES+1);//corresponding edit script. Initialized to have room for at least 2*MAXLINES+1 elements.
+		Change new = new Change();
+		
+		//Read file1 and file2 into ArrayLists A and B
+		A = readFile( file1 );
+		B = readFile( file2 );
 	}
 
 	/**
@@ -39,7 +44,7 @@ public class Diff
 	 * @param filename The filename to read.
 	 * @return The ArrayList of Strings containing the text of the file.
 	 */
-	private ArrayList<String> readfile( String filename )
+	private ArrayList<String> readFile( String filename )
 	{
 		ArrayList<String> lines = new ArrayList<String>();
 
@@ -83,10 +88,12 @@ public class Diff
 				do
 				{//Look to see if this is a block of deleted lines.
 					//TODO: Check to see how many deleted lines there are.
+					throw new Exception( "Need to finish this part of the code." );
 					//Possibly use j to point to the command after the last deletion.
 				}
 				
 				//TODO: Print out the deleted stuff.
+				throw new Exception( "Need to finish this part of the code." );
 			}
 		}
 	}
