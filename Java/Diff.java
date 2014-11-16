@@ -32,12 +32,29 @@ public class Diff
 		ArrayList<Integer> last_d = new ArrayList<Integer>(2*MAXLINES+1);//the row containing the last d. Initialized to have room for at least 2*MAXLINES+1 elements.
 		ArrayList<Change> script = new ArrayList<Integer>(2*MAXLINES+1);//corresponding edit script. Initialized to have room for at least 2*MAXLINES+1 elements.
 		Change new = new Change();
-		
+
 		//Read file1 and file2 into ArrayLists A and B
 		A = readFile( file1 );
 		m = A.size();
 		B = readFile( file2 );
 		n = B.size();
+
+		//Check how many rows are identical and move the row variable past them.
+		for( row = 0; (row < m) && (row < n) && (A.get(row).compareTo(B.get(row)) == 0); row++ )
+		{
+			//Don't really have to do anything, the for loop does the work with the compare and incrementing row.
+		}
+
+		last_d[ORIGIN] = row;
+		script[ORIGIN] = null;
+		lower = (row == m) ? ORIGIN+1 : ORIGIN-1;
+		upper = (row == n) ? ORIGIN-1 : ORIGIN+1;
+		
+		if( lower > upper )
+		{
+			System.out.println( "The files are identical." );
+			exit(0);
+		}
 	}
 
 	/**
