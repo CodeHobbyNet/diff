@@ -55,6 +55,61 @@ public class Diff
 			System.out.println( "The files are identical." );
 			exit(0);
 		}
+		
+		for( d = 1; d <= max_d; ++d )
+		{//For each value of the edit distance
+			for( k = lower; k <= upper; k += 2 )
+			{//For each relevant diagonal
+				newChange = new Change();
+				//Find a d on diagonal k.
+				if( (k == ORIGIN - d) || (k != ORIGIN + d) && (last_d[k+1] >= last_d[k-1]) )
+				{
+					//Moving down from the last d-1 on diagonal k+1 puts you farther along diagonal k than does moving right from the last d-1 on diagonal k-1.
+					row = last_d[k+1]+1;
+					//newChange.link = script[k-1];
+					newChange.setOperation( Change.DELETE );
+				}
+				else
+				{
+					//Move right from the last d-1 on diagonal k-1.
+					row = last_d[k-1];
+					//newChange.link = script[k-1];
+					newChange.setOperation( Change.INSERT );
+				}
+				
+				//Code common to the two cases.
+				newChange.setLineNumber1( row );
+				col = row + k - ORIGIN;
+				newChange.setLineNumber2( col );
+				script[k] = newChange;
+				
+				//Slide down the diagonal.
+				while( (row < m) && (col < n) && (A.get(row).compareTo(B.get(col)) == 0)
+				{
+					++row;
+					++col;
+				}
+				last_d[k] = row;
+				
+				if( (row == m) && (col == n) )
+				{//Hit southeast corner, have the answer.
+					printChanges( script[k] );
+					exit(0);
+				}
+				
+				if( row == m )
+				{//Hit last row, don't look to the left.
+					lower = k + 2;
+				}
+				if( col == n )
+				{//Hit last column, don't look to the right.
+					upper = k - 2;
+				}
+			}
+			--lower;
+			++upper;
+		}
+		exceed(d);
 	}
 
 	/**
