@@ -171,4 +171,10 @@ public class Diff
 			}
 		}
 	}
+	
+	private void exceed( int d )
+	{
+		System.err.println( "The files differ in at least " + d + " lines." );
+		exit(1);
+	}
 }
