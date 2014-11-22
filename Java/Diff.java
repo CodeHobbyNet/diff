@@ -151,6 +151,8 @@ public class Diff
 	{
 		Change a, b;
 		int j = 0;
+		int change;
+
 		for( int i = 0; i < changes.size(); i++ )
 		{//For each change in the changes ArrayList, print the change.
 			if( changes.get(i).getOperation() == Change.INSERT )
@@ -161,7 +163,11 @@ public class Diff
 			{//It's a delete, so tell the user.
 				do
 				{//Look to see if this is a block of deleted lines.
-					//TODO: Check to see how many deleted lines there are.
+					//Check to see how many deleted lines there are.
+					for( j = i; (j < changes.size()) && (changes.get(i).getOperation() == Change.DELETE) && (changes.get(i).getLineNumber1() == changes.get(i-1).getLineNumber1()+1); j++ )
+					{//Goes through each change until the end of the list, it finds an insert, or it finds something that's not 1 more than the last line number.
+						//TODO, probably should put a check in the for loop to make sure it doesn't do changes.get(-1) or something like that.
+					}
 					throw new Exception( "Need to finish this part of the code." );
 					//Possibly use j to point to the command after the last deletion.
 				}
