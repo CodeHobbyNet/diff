@@ -151,7 +151,7 @@ public class Diff
 	{
 		Change a, b;
 		int j = 0;
-		int change;
+		boolean change;
 
 		for( int i = 0; i < changes.size(); i++ )
 		{//For each change in the changes ArrayList, print the change.
@@ -164,16 +164,50 @@ public class Diff
 				do
 				{//Look to see if this is a block of deleted lines.
 					//Check to see how many deleted lines there are.
-					for( j = i; (j < changes.size()) && (changes.get(i).getOperation() == Change.DELETE) && (changes.get(i).getLineNumber1() == changes.get(i-1).getLineNumber1()+1); j++ )
+					for( j = i+1; (j < changes.size()) && (changes.get(j).getOperation() == Change.DELETE) && (changes.get(j).getLineNumber1() == changes.get(j-1).getLineNumber1()+1); j++ )
 					{//Goes through each change until the end of the list, it finds an insert, or it finds something that's not 1 more than the last line number.
-						//TODO, probably should put a check in the for loop to make sure it doesn't do changes.get(-1) or something like that.
 					}
 					throw new Exception( "Need to finish this part of the code." );
 					//Possibly use j to point to the command after the last deletion.
 				}
 				
-				//TODO: Print out the deleted stuff.
-				throw new Exception( "Need to finish this part of the code." );
+				change = (changes.get(j).getOperation() == Change.INSERT) && (changes.get(j).getLineNumber1() == changes.get(j-1).getLineNumber1());
+				
+				if( change )
+				{
+					System.out.print( "Changed " );
+				}
+				else
+				{
+					System.out.print( "Deleted " );
+				}
+				
+				if( j == (i+1) )
+				{
+					System.out.println( "line " + changes.get(i).getLineNumber1() + ":" );
+				}
+				else
+				{
+					System.out.println( "lines " + changes.get(i).getLineNumber1() + "-" + changes.get(j-1).getLineNumber1() + ":" );
+				}
+				
+				//Print the deleted lines
+				for( int k = i; k < j; k++ )
+				{
+					System.out.println( " " + A[changes.get(k).getLineNumber1()-1] );
+				}
+				
+				if( !change )
+				{
+					continue;
+				}
+				System.out.println( "To:" );
+			}
+			
+			//Print the inserted lines.
+			for( j = i; (j < changes.size()) && (changes.get(j).getOperation() == Change.INSERT) && (changes.get(j).getLineNumber1() == changes.get(i).getLineNumber1()); j++ )
+			{
+				System.out.print( " " + B[changes.get(j).getLineNumber2()-1] );
 			}
 		}
 	}
