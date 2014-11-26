@@ -31,7 +31,7 @@ public class Diff
 		int col;//column number
 		ArrayList<Integer> last_d = new ArrayList<Integer>(2*MAXLINES+1);//the row containing the last d. Initialized to have room for at least 2*MAXLINES+1 elements.
 		ArrayList<Change> script = new ArrayList<Integer>(2*MAXLINES+1);//corresponding edit script. Initialized to have room for at least 2*MAXLINES+1 elements.
-		Change new = new Change();
+		Change newChange = new Change();
 
 		//Read file1 and file2 into ArrayLists A and B
 		A = readFile( file1 );
@@ -84,7 +84,7 @@ public class Diff
 				script[k] = newChange;
 				
 				//Slide down the diagonal.
-				while( (row < m) && (col < n) && (A.get(row).compareTo(B.get(col)) == 0)
+				while( (row < m) && (col < n) && (A.get(row).compareTo(B.get(col)) == 0) )
 				{
 					++row;
 					++col;
@@ -133,7 +133,7 @@ public class Diff
 			}
 		} catch( IOException e )
 		{
-			System.err.println( "Error reading file \"" + filename "\": " + e.getMessage() );
+			System.err.println( "Error reading file \"" + filename + "\": " + e.getMessage() );
 			e.printStackTrace();
 		}
 		finally
@@ -161,7 +161,7 @@ public class Diff
 			}
 			else
 			{//It's a delete, so tell the user.
-				do
+				//do
 				{//Look to see if this is a block of deleted lines.
 					//Check to see how many deleted lines there are.
 					for( j = i+1; (j < changes.size()) && (changes.get(j).getOperation() == Change.DELETE) && (changes.get(j).getLineNumber1() == changes.get(j-1).getLineNumber1()+1); j++ )
