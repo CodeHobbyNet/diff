@@ -3,6 +3,7 @@ package net.codehobby.diff;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 
 public class Diff
 {
@@ -30,7 +31,7 @@ public class Diff
 		int row;//row number
 		int col;//column number
 		ArrayList<Integer> last_d = new ArrayList<Integer>(2*MAXLINES+1);//the row containing the last d. Initialized to have room for at least 2*MAXLINES+1 elements.
-		ArrayList<Change> script = new ArrayList<Integer>(2*MAXLINES+1);//corresponding edit script. Initialized to have room for at least 2*MAXLINES+1 elements.
+		ArrayList<Change> script = new ArrayList<Change>(2*MAXLINES+1);//corresponding edit script. Initialized to have room for at least 2*MAXLINES+1 elements.
 		Change newChange = new Change();
 
 		//Read file1 and file2 into ArrayLists A and B
@@ -45,15 +46,15 @@ public class Diff
 			//Don't really have to do anything, the for loop does the work with the compare and incrementing row.
 		}
 
-		last_d[ORIGIN] = row;
-		script[ORIGIN] = null;
+		last_d.set( ORIGIN, row );
+		script.set( ORIGIN, null );
 		lower = (row == m) ? ORIGIN+1 : ORIGIN-1;
 		upper = (row == n) ? ORIGIN-1 : ORIGIN+1;
 		
 		if( lower > upper )
 		{
 			System.out.println( "The files are identical." );
-			exit(0);
+			System.exit(0);
 		}
 		
 		for( d = 1; d <= max_d; ++d )
@@ -62,17 +63,17 @@ public class Diff
 			{//For each relevant diagonal
 				newChange = new Change();
 				//Find a d on diagonal k.
-				if( (k == ORIGIN - d) || (k != ORIGIN + d) && (last_d[k+1] >= last_d[k-1]) )
+				if( (k == ORIGIN - d) || (k != ORIGIN + d) && (last_d.get(k+1) >= last_d.get(k-1)) )
 				{
 					//Moving down from the last d-1 on diagonal k+1 puts you farther along diagonal k than does moving right from the last d-1 on diagonal k-1.
-					row = last_d[k+1]+1;
+					row = last_d.get(k+1)+1;
 					//newChange.link = script[k-1];
 					newChange.setOperation( Change.DELETE );
 				}
 				else
 				{
 					//Move right from the last d-1 on diagonal k-1.
-					row = last_d[k-1];
+					row = last_d.get(k-1);
 					//newChange.link = script[k-1];
 					newChange.setOperation( Change.INSERT );
 				}
@@ -81,7 +82,7 @@ public class Diff
 				newChange.setLineNumber1( row );
 				col = row + k - ORIGIN;
 				newChange.setLineNumber2( col );
-				script[k] = newChange;
+				script.set( k, newChange );
 				
 				//Slide down the diagonal.
 				while( (row < m) && (col < n) && (A.get(row).compareTo(B.get(col)) == 0) )
@@ -89,12 +90,14 @@ public class Diff
 					++row;
 					++col;
 				}
-				last_d[k] = row;
+				last_d.set( k, row );
 				
 				if( (row == m) && (col == n) )
 				{//Hit southeast corner, have the answer.
-					printChanges( script[k] );
-					exit(0);
+					//printChanges( script.get(k) );
+					printChanges( script );
+					return script;
+					//System.exit(0);
 				}
 				
 				if( row == m )
@@ -110,6 +113,7 @@ public class Diff
 			++upper;
 		}
 		exceed(d);
+		return script;//Should never get here, but put in for peace of mind of the compiler
 	}
 
 	/**
@@ -157,7 +161,8 @@ public class Diff
 		{//For each change in the changes ArrayList, print the change.
 			if( changes.get(i).getOperation() == Change.INSERT )
 			{//If it's an insert, tell the user.
-				System.out.println( "Inserted after line " + individualChange.getLineNumber1() + ":" );
+				//System.out.println( "Inserted after line " + individualChange.getLineNumber1() + ":" );
+				System.out.println( "Inserted after line " + changes.get(i).getLineNumber1() + ":" );
 			}
 			else
 			{//It's a delete, so tell the user.
@@ -167,7 +172,7 @@ public class Diff
 					for( j = i+1; (j < changes.size()) && (changes.get(j).getOperation() == Change.DELETE) && (changes.get(j).getLineNumber1() == changes.get(j-1).getLineNumber1()+1); j++ )
 					{//Goes through each change until the end of the list, it finds an insert, or it finds something that's not 1 more than the last line number.
 					}
-					throw new Exception( "Need to finish this part of the code." );
+					//throw new Exception( "Need to finish this part of the code." );
 					//Possibly use j to point to the command after the last deletion.
 				}
 				
@@ -194,7 +199,7 @@ public class Diff
 				//Print the deleted lines
 				for( int k = i; k < j; k++ )
 				{
-					System.out.println( " " + A[changes.get(k).getLineNumber1()-1] );
+					System.out.println( " " + A.get(changes.get(k).getLineNumber1()-1) );
 				}
 				
 				if( !change )
@@ -207,7 +212,7 @@ public class Diff
 			//Print the inserted lines.
 			for( j = i; (j < changes.size()) && (changes.get(j).getOperation() == Change.INSERT) && (changes.get(j).getLineNumber1() == changes.get(i).getLineNumber1()); j++ )
 			{
-				System.out.print( " " + B[changes.get(j).getLineNumber2()-1] );
+				System.out.print( " " + B.get(changes.get(j).getLineNumber2()-1) );
 			}
 		}
 	}
@@ -215,6 +220,6 @@ public class Diff
 	private void exceed( int d )
 	{
 		System.err.println( "The files differ in at least " + d + " lines." );
-		exit(1);
+		System.exit(1);
 	}
 }
