@@ -34,6 +34,18 @@ public class Diff
 		ArrayList<Change> script = new ArrayList<Change>(2*MAXLINES+1);//corresponding edit script. Initialized to have room for at least 2*MAXLINES+1 elements.
 		Change newChange = new Change();
 
+		//Initialize last_d
+		for( int i = 0; i < 2*MAXLINES+1; i++ )
+		{
+			last_d.add(0);
+		}
+
+		//Initialize script
+		for( int i = 0; i < 2*MAXLINES+1; i++ )
+		{
+			script.add(newChange);
+		}
+
 		//Read file1 and file2 into ArrayLists A and B
 		A = readFile( file1 );
 		m = A.size();
