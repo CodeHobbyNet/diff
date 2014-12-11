@@ -34,6 +34,18 @@ public class Diff
 		ArrayList<Change> script = new ArrayList<Change>(2*MAXLINES+1);//corresponding edit script. Initialized to have room for at least 2*MAXLINES+1 elements.
 		Change newChange = new Change();
 
+		//Initialize last_d
+		for( int i = 0; i < 2*MAXLINES+1; i++ )
+		{
+			last_d.add(0);
+		}
+
+		//Initialize script
+		for( int i = 0; i < 2*MAXLINES+1; i++ )
+		{
+			script.add(newChange);
+		}
+
 		//Read file1 and file2 into ArrayLists A and B
 		A = readFile( file1 );
 		m = A.size();
@@ -157,6 +169,7 @@ public class Diff
 		int j = 0;
 		boolean change;
 
+		//Probably want to change this for loop and/or the initialization of script in the diff method, the for loop is thinking there are ~2k changes.
 		for( int i = 0; i < changes.size(); i++ )
 		{//For each change in the changes ArrayList, print the change.
 			if( changes.get(i).getOperation() == Change.INSERT )
@@ -199,7 +212,9 @@ public class Diff
 				//Print the deleted lines
 				for( int k = i; k < j; k++ )
 				{
-					System.out.println( " " + A.get(changes.get(k).getLineNumber1()-1) );
+					System.out.println( "k: " + k );
+					//System.out.println( " " + A.get(changes.get(k).getLineNumber1()-1) );
+					System.out.println( " " + A.get(changes.get(k).getLineNumber1()) );
 				}
 				
 				if( !change )
