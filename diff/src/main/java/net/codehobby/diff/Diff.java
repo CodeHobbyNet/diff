@@ -222,4 +222,22 @@ public class Diff
 		System.err.println( "The files differ in at least " + d + " lines." );
 		System.exit(1);
 	}
+
+	/**
+	 * Looks for the first line that's different between A and B. Returns either that line number or m or n if it doesn't fine any.
+	 *
+	 * @return Returns the line number of the first different line of A and B, or m or n if it doesn't find any.
+	 */
+	private int firstDifferentLine()
+	{
+		int row;
+
+		//Check how many rows are identical and move the row variable past them.
+		for( row = 0; (row < m) && (row < n) && (A.get(row).compareTo(B.get(row)) == 0); row++ )
+		{
+			//Don't really have to do anything, the for loop does the work with the compare and incrementing row.
+		}
+
+		return row;
+	}
 }
