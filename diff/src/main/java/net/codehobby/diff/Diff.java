@@ -8,7 +8,8 @@ import java.io.IOException;
 public class Diff
 {
 	private int MAXLINES = 2000;//Max number of lines to read in a file.
-	private int ORIGIN = MAXLINES;//Subscript fro diagonal 0.
+	//private int ORIGIN = MAXLINES;//Subscript fro diagonal 0.
+	private int ORIGIN = 0;//Subscript fro diagonal 0.
 	ArrayList<String> A;//Lines of file1.
 	ArrayList<String> B;//Lines of file2.
 
@@ -52,12 +53,15 @@ public class Diff
 		B = readFile( file2 );
 		n = B.size();
 
+		//Get the line number that's different for the first line that's different between A and B.
+		row = firstDifferentLine();
+/*
 		//Check how many rows are identical and move the row variable past them.
 		for( row = 0; (row < m) && (row < n) && (A.get(row).compareTo(B.get(row)) == 0); row++ )
 		{
 			//Don't really have to do anything, the for loop does the work with the compare and incrementing row.
 		}
-
+*/
 		last_d.set( ORIGIN, row );
 		script.set( ORIGIN, null );
 		lower = (row == m) ? ORIGIN+1 : ORIGIN-1;
@@ -121,8 +125,8 @@ public class Diff
 					upper = k - 2;
 				}
 			}
-			--lower;
-			++upper;
+			lower--;
+			upper++;
 		}
 		exceed(d);
 		return script;//Should never get here, but put in for peace of mind of the compiler
@@ -168,8 +172,10 @@ public class Diff
 		Change a, b;
 		int j = 0;
 		boolean change;
+		Iterator listIterator = changes.iterator();
 
 		//Probably want to change this for loop and/or the initialization of script in the diff method, the for loop is thinking there are ~2k changes.
+		//Maybe use ListIterator.
 		for( int i = 0; i < changes.size(); i++ )
 		{//For each change in the changes ArrayList, print the change.
 			if( changes.get(i).getOperation() == Change.INSERT )
